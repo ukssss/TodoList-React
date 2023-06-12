@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import LoginInput from '../../components/input/loginInput/loginInput';
-import LoginCheckbox from '../../components/input/loginCheckbox/loginCheckbox';
 import Button from '../../components/button/button';
+import { Link } from 'react-router-dom';
 
 export default function SignIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [status, setStatus] = useState(true);
 
     const onChangeEmail = (e) => {
         setEmail(e.target.value);
@@ -14,7 +15,13 @@ export default function SignIn() {
     const onChangePassword = (e) => {
         setPassword(e.target.value);
     };
-    const onSubmit = () => {};
+    const onChangeLoginButton = () => {
+        if (email.includes('@') && password.length >= 8) {
+            setStatus(false);
+        }
+    };
+
+    useEffect(onChangeLoginButton);
 
     return (
         <LoginWrapper>
@@ -34,8 +41,10 @@ export default function SignIn() {
                     placeholder="Password"
                     onChange={onChangePassword}
                 />
-                <Button>로그인</Button>
-                <Button>회원가입</Button>
+                <Button disabled={status}>로그인</Button>
+                <Button>
+                    <Link to="/signup">회원가입</Link>
+                </Button>
             </LoginForm>
         </LoginWrapper>
     );

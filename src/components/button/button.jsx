@@ -13,7 +13,11 @@ const StyledButton = styled.button`
 `;
 
 function Button({ children, ...restProps }) {
-    return <StyledButton {...restProps}>{children}</StyledButton>;
+    return (
+        <StyledButton type="button" {...restProps}>
+            {children}
+        </StyledButton>
+    );
 }
 
 export default Button;
