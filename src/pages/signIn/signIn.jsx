@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import LoginInput from '../../components/input/loginInput/loginInput';
 import LoginCheckbox from '../../components/input/loginCheckbox/loginCheckbox';
+import Button from '../../components/button/button';
 
 export default function SignIn() {
-    const [id, setID] = useState('');
-    const [password, setPW] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-    const onChangeID = (e) => {
-        setID(e.target.value);
+    const onChangeEmail = (e) => {
+        setEmail(e.target.value);
     };
-    const onChangePW = (e) => {
-        setPW(e.target.value);
+    const onChangePassword = (e) => {
+        setPassword(e.target.value);
     };
     const onSubmit = () => {};
 
@@ -21,23 +22,20 @@ export default function SignIn() {
             <LoginForm method="post" id="signin-form">
                 <LoginInput
                     type="text"
-                    name="userID"
-                    placeholder="ID"
-                    onChange={onChangeID}
+                    name="userEmail"
+                    data-testid="email-input"
+                    placeholder="Email"
+                    onChange={onChangeEmail}
                 />
                 <LoginInput
                     type="password"
                     name="userPassword"
+                    data-testid="password-input"
                     placeholder="Password"
-                    onChange={onChangePW}
+                    onChange={onChangePassword}
                 />
-                <LoginCheckbox>아이디 저장하기</LoginCheckbox>
-                <LoginInput
-                    $primary
-                    type="submit"
-                    value="Login"
-                    onClick={onSubmit}
-                />
+                <Button>로그인</Button>
+                <Button>회원가입</Button>
             </LoginForm>
         </LoginWrapper>
     );
@@ -48,7 +46,6 @@ const LoginWrapper = styled.div`
     height: 350px;
     padding: 40px;
     box-sizing: border-box;
-    background-color: yellowgreen;
 `;
 
 const MyH2 = styled.h2`
