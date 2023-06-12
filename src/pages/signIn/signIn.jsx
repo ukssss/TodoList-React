@@ -42,6 +42,7 @@ export default function SignIn() {
 }
 
 const LoginWrapper = styled.div`
+    margin: 0 auto;
     width: 400px;
     height: 350px;
     padding: 40px;
