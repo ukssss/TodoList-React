@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Button from '../../components/button/button';
 import LoginInput from '../../components/input/loginInput/loginInput';
 import LoginCheckbox from '../../components/input/loginCheckbox/loginCheckbox';
 
@@ -9,14 +8,12 @@ export default function SignIn() {
     const [password, setPW] = useState('');
 
     const onChangeID = (e) => {
-        console.log(`ID : ${e.target.value}`);
+        setID(e.target.value);
     };
     const onChangePW = (e) => {
-        console.log(`PW : ${e.target.value}`);
+        setPW(e.target.value);
     };
-    const onSubmit = (e) => {
-        console.log(`Nice Submit !`);
-    };
+    const onSubmit = () => {};
 
     return (
         <LoginWrapper>
@@ -42,7 +39,6 @@ export default function SignIn() {
                     onClick={onSubmit}
                 />
             </LoginForm>
-            <Button>Test Button</Button>
         </LoginWrapper>
     );
 }
