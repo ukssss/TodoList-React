@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../components/button/button';
 import LoginInput from '../../components/input/loginInput/loginInput';
+import LoginCheckbox from '../../components/input/loginCheckbox/loginCheckbox';
 
 export default function SignIn() {
     const [id, setID] = useState('');
@@ -13,7 +14,9 @@ export default function SignIn() {
     const onChangePW = (e) => {
         console.log(`PW : ${e.target.value}`);
     };
-    const onSubmit = () => {};
+    const onSubmit = (e) => {
+        console.log(`Nice Submit !`);
+    };
 
     return (
         <LoginWrapper>
@@ -31,10 +34,7 @@ export default function SignIn() {
                     placeholder="Password"
                     onChange={onChangePW}
                 />
-                <LoginLabel htmlFor="remember">
-                    <LoginCheckbox type="checkbox" id="remember" />
-                    아이디 저장하기
-                </LoginLabel>
+                <LoginCheckbox>아이디 저장하기</LoginCheckbox>
                 <LoginInput
                     $primary
                     type="submit"
@@ -62,10 +62,3 @@ const MyH2 = styled.h2`
 `;
 
 const LoginForm = styled.form``;
-
-const LoginLabel = styled.label`
-    color: #999999;
-    padding-left: 26px;
-`;
-
-const LoginCheckbox = styled.input``;
