@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 
 import LoginWrapper from '../../components/login/loginWrapper/loginWrapper';
 import LoginForm from '../../components/login/loginForm/loginForm';
@@ -79,6 +81,23 @@ export default function SignUp() {
         }
     }, [isNameValid, isEmailValid, isPasswordValid, isRepasswordValid]);
 
+    const navigate = useNavigate();
+
+    const onSignUpSubmit = () => {
+        axios
+            .post(`http://localhost:8000/auth/signup`, {
+                email: email,
+                password: password,
+            })
+            .then(function (res) {
+                console.log(res);
+                navigate('/signin');
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     return (
         <LoginWrapper>
             <MyH2>회원가입 페이지</MyH2>
@@ -132,7 +151,11 @@ export default function SignUp() {
                     ''
                 )}
 
-                <Button disabled={status} data-testid="signup-button">
+                <Button
+                    disabled={status}
+                    data-testid="signup-button"
+                    onClick={onSignUpSubmit}
+                >
                     회원가입
                 </Button>
             </LoginForm>
