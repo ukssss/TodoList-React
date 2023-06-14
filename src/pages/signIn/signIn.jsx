@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+import LoginWrapper from '../../components/login/loginWrapper/loginWrapper';
 import LoginForm from '../../components/login/loginForm/loginForm';
+import LoginInfo from '../../components/login/loginInfo/loginInfo';
 import LoginInput from '../../components/login/loginInput/loginInput';
+
 import Button from '../../components/button/button';
 import ErrorDiv from '../../components/error/errorDiv/errorDiv';
-import LoginInfo from '../../components/login/loginInfo/loginInfo';
 
 export default function SignIn() {
     const [email, setEmail] = useState('');
@@ -86,13 +88,6 @@ export default function SignIn() {
         </LoginWrapper>
     );
 }
-
-const LoginWrapper = styled.div`
-    margin: 0 auto;
-    width: 400px;
-    padding: 40px;
-    box-sizing: border-box;
-`;
 
 const MyH2 = styled.h2`
     font-size: 24px;

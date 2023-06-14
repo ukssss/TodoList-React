@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import LoginWrapper from '../../components/login/loginWrapper/loginWrapper';
 import LoginForm from '../../components/login/loginForm/loginForm';
 import LoginInfo from '../../components/login/loginInfo/loginInfo';
 import LoginInput from '../../components/login/loginInput/loginInput';
@@ -45,14 +46,6 @@ export default function SignUp() {
         </LoginWrapper>
     );
 }
-
-const LoginWrapper = styled.div`
-    margin: 0 auto;
-    width: 400px;
-    height: 350px;
-    padding: 40px;
-    box-sizing: border-box;
-`;
 
 const MyH2 = styled.h2`
     font-size: 24px;
