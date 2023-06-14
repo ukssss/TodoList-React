@@ -34,7 +34,7 @@ export default function SignIn() {
         } else {
             setEmailError(false);
         }
-    }, [email]);
+    }, [email.length, isEmailValid]);
 
     useEffect(() => {
         if (password.length > 0 && !isPasswordValid) {
@@ -42,7 +42,7 @@ export default function SignIn() {
         } else {
             setPasswordError(false);
         }
-    }, [password]);
+    }, [password.length, isPasswordValid]);
 
     useEffect(() => {
         if (isEmailValid && isPasswordValid) {
