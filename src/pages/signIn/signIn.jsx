@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import LoginInput from '../../components/input/loginInput/loginInput';
+import { Link } from 'react-router-dom';
+
+import LoginForm from '../../components/login/loginForm/loginForm';
+import LoginInput from '../../components/login/loginInput/loginInput';
 import Button from '../../components/button/button';
 import ErrorDiv from '../../components/error/errorDiv/errorDiv';
-import { Link } from 'react-router-dom';
+import LoginInfo from '../../components/login/loginInfo/loginInfo';
 
 export default function SignIn() {
     const [email, setEmail] = useState('');
@@ -49,11 +52,11 @@ export default function SignIn() {
         <LoginWrapper>
             <MyH2>로그인 페이지</MyH2>
             <LoginForm method="post" id="signin-form">
+                <LoginInfo>Email</LoginInfo>
                 <LoginInput
                     type="text"
                     name="userEmail"
                     data-testid="email-input"
-                    placeholder="Email"
                     onChange={onChangeEmail}
                 />
                 {emailError ? (
@@ -62,11 +65,11 @@ export default function SignIn() {
                     ''
                 )}
 
+                <LoginInfo>Password</LoginInfo>
                 <LoginInput
                     type="password"
                     name="userPassword"
                     data-testid="password-input"
-                    placeholder="Password"
                     onChange={onChangePassword}
                 />
                 {passwordError ? (
@@ -87,7 +90,6 @@ export default function SignIn() {
 const LoginWrapper = styled.div`
     margin: 0 auto;
     width: 400px;
-    height: 350px;
     padding: 40px;
     box-sizing: border-box;
 `;
@@ -97,5 +99,3 @@ const MyH2 = styled.h2`
     color: #6a24fe;
     margin-bottom: 20px;
 `;
-
-const LoginForm = styled.form``;
