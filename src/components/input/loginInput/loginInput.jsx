@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 
 const Input = styled.input`
@@ -11,8 +11,8 @@ const Input = styled.input`
     background-color: ${(props) => (props.$primary ? '#6A24FE' : '#f8f8f8')};
 `;
 
-function LoginInput({ ...props }) {
-    return <Input {...props} />;
-}
+const LoginInput = forwardRef(({ ...props }, ref) => {
+    return <Input ref={ref} {...props} />;
+});
 
 export default LoginInput;

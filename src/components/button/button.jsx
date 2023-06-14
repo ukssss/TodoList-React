@@ -12,8 +12,12 @@ const StyledButton = styled.button`
     color: ${(props) => (props.$primary ? '#000000' : '#f8f8f8')};
 `;
 
-function Button({ children, ...restProps }) {
-    return <StyledButton {...restProps}>{children}</StyledButton>;
+function Button({ disabled, children, ...restProps }) {
+    return (
+        <StyledButton type="button" disabled={disabled} {...restProps}>
+            {children}
+        </StyledButton>
+    );
 }
 
 export default Button;

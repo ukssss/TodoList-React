@@ -1,20 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import LoginInput from '../../components/input/loginInput/loginInput';
-import LoginCheckbox from '../../components/input/loginCheckbox/loginCheckbox';
 import Button from '../../components/button/button';
+import ErrorDiv from '../../components/error/errorDiv/errorDiv';
+import { Link } from 'react-router-dom';
 
 export default function SignIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [status, setStatus] = useState(true);
+    const [emailError, setEmailError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
 
     const onChangeEmail = (e) => {
         setEmail(e.target.value);
     };
+
     const onChangePassword = (e) => {
         setPassword(e.target.value);
     };
-    const onSubmit = () => {};
+
+    let isEmailValid = email.includes('@');
+    let isPasswordValid = password.length >= 8;
+
+    useEffect(() => {
+        if (email.length > 0 && !isEmailValid) {
+            setEmailError(true);
+        } else {
+            setEmailError(false);
+        }
+    }, [email]);
+
+    useEffect(() => {
+        if (password.length > 0 && !isPasswordValid) {
+            setPasswordError(true);
+        } else {
+            setPasswordError(false);
+        }
+    }, [password]);
+
+    useEffect(() => {
+        if (isEmailValid && isPasswordValid) {
+            setStatus(false);
+        }
+    }, [isEmailValid, isPasswordValid]);
 
     return (
         <LoginWrapper>
@@ -27,6 +56,12 @@ export default function SignIn() {
                     placeholder="Email"
                     onChange={onChangeEmail}
                 />
+                {emailError ? (
+                    <ErrorDiv>이메일 : @ 이 누락되었습니다</ErrorDiv>
+                ) : (
+                    ''
+                )}
+
                 <LoginInput
                     type="password"
                     name="userPassword"
@@ -34,8 +69,16 @@ export default function SignIn() {
                     placeholder="Password"
                     onChange={onChangePassword}
                 />
-                <Button>로그인</Button>
-                <Button>회원가입</Button>
+                {passwordError ? (
+                    <ErrorDiv>비밀번호 : 8자 이상으로 사용하세요.</ErrorDiv>
+                ) : (
+                    ''
+                )}
+
+                <Button disabled={status}>로그인</Button>
+                <Button>
+                    <Link to="/signup">회원가입</Link>
+                </Button>
             </LoginForm>
         </LoginWrapper>
     );
