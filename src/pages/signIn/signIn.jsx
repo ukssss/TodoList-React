@@ -47,6 +47,8 @@ export default function SignIn() {
     useEffect(() => {
         if (isEmailValid && isPasswordValid) {
             setStatus(false);
+        } else {
+            setStatus(true);
         }
     }, [isEmailValid, isPasswordValid]);
 
