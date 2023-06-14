@@ -1,13 +1,84 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import LoginWrapper from '../../components/login/loginWrapper/loginWrapper';
 import LoginForm from '../../components/login/loginForm/loginForm';
 import LoginInfo from '../../components/login/loginInfo/loginInfo';
 import LoginInput from '../../components/login/loginInput/loginInput';
+
 import Button from '../../components/button/button';
+import ErrorDiv from '../../components/error/errorDiv/errorDiv';
 
 export default function SignUp() {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [repassword, setRepassword] = useState('');
+
+    const [emailCheck, setEmailCheck] = useState(false);
+    const [passwordCheck, setPasswordCheck] = useState(false);
+    const [repasswordCheck, setRepasswordCheck] = useState(false);
+
+    const [status, setStatus] = useState(true);
+
+    const onChangeName = (e) => {
+        setName(e.target.value);
+    };
+
+    const onChangeEmail = (e) => {
+        setEmail(e.target.value);
+    };
+
+    const onChangePassword = (e) => {
+        setPassword(e.target.value);
+    };
+
+    const onChangeRepassword = (e) => {
+        setRepassword(e.target.value);
+    };
+
+    let isNameValid = name.length > 0;
+    let isEmailValid = email.includes('@');
+    let isPasswordValid = password.length >= 8;
+    let isRepasswordValid = password === repassword;
+
+    useEffect(() => {
+        if (email.length > 0 && !isEmailValid) {
+            setEmailCheck(true);
+        } else {
+            setEmailCheck(false);
+        }
+    }, [email.length, isEmailValid]);
+
+    useEffect(() => {
+        if (password.length > 0 && !isPasswordValid) {
+            setPasswordCheck(true);
+        } else {
+            setPasswordCheck(false);
+        }
+    }, [password.length, isPasswordValid]);
+
+    useEffect(() => {
+        if (repassword.length > 0 && !isRepasswordValid) {
+            setRepasswordCheck(true);
+        } else {
+            setRepasswordCheck(false);
+        }
+    }, [repassword.length, isRepasswordValid]);
+
+    useEffect(() => {
+        if (
+            isNameValid &&
+            isEmailValid &&
+            isPasswordValid &&
+            isRepasswordValid
+        ) {
+            setStatus(false);
+        } else {
+            setStatus(true);
+        }
+    }, [isNameValid, isEmailValid, isPasswordValid, isRepasswordValid]);
+
     return (
         <LoginWrapper>
             <MyH2>회원가입 페이지</MyH2>
@@ -15,8 +86,8 @@ export default function SignUp() {
                 <LoginInfo>Your name</LoginInfo>
                 <LoginInput
                     type="text"
-                    name="userEmail"
-                    data-testid="email-input"
+                    name="username"
+                    onChange={onChangeName}
                 />
 
                 <LoginInfo>Email</LoginInfo>
@@ -24,7 +95,13 @@ export default function SignUp() {
                     type="text"
                     name="userEmail"
                     data-testid="email-input"
+                    onChange={onChangeEmail}
                 />
+                {emailCheck ? (
+                    <ErrorDiv>이메일 : @ 이 누락되었습니다.</ErrorDiv>
+                ) : (
+                    ''
+                )}
 
                 <LoginInfo>Password</LoginInfo>
                 <LoginInput
@@ -32,16 +109,32 @@ export default function SignUp() {
                     name="userPassword"
                     data-testid="password-input"
                     placeholder="At least 8 characters"
+                    onChange={onChangePassword}
                 />
+                {passwordCheck ? (
+                    <ErrorDiv>비밀번호 : 8자 이상으로 사용하세요.</ErrorDiv>
+                ) : (
+                    ''
+                )}
 
                 <LoginInfo>Re-enter password</LoginInfo>
                 <LoginInput
                     type="password"
                     name="userPassword"
                     data-testid="password-input"
+                    onChange={onChangeRepassword}
                 />
+                {repasswordCheck ? (
+                    <ErrorDiv>
+                        비밀번호 : 비밀번호가 동일하지 않습니다.
+                    </ErrorDiv>
+                ) : (
+                    ''
+                )}
 
-                <Button>회원가입</Button>
+                <Button disabled={status} data-testid="signup-button">
+                    회원가입
+                </Button>
             </LoginForm>
         </LoginWrapper>
     );
