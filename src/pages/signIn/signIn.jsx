@@ -54,6 +54,17 @@ export default function SignIn() {
     }, [isEmailValid, isPasswordValid]);
 
     const navigate = useNavigate();
+    const isLoggedIn = localStorage.getItem('token');
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/todo');
+        }
+    }, [navigate, isLoggedIn]);
+
+    const onDirectSignup = () => {
+        navigate('/signup');
+    };
 
     const onSigninSubmit = () => {
         axios
@@ -64,7 +75,7 @@ export default function SignIn() {
             .then((res) => {
                 console.log(res);
                 localStorage.setItem('token', res.data.access_token);
-                navigate('/todos');
+                navigate('/todo');
             })
             .catch((err) => {
                 console.log(err);
@@ -108,7 +119,7 @@ export default function SignIn() {
                 >
                     로그인
                 </Button>
-                <Button></Button>
+                <Button onClick={onDirectSignup}>회원가입</Button>
             </LoginForm>
         </LoginWrapper>
     );
