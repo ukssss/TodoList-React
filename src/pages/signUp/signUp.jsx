@@ -83,7 +83,7 @@ export default function SignUp() {
 
     const navigate = useNavigate();
 
-    const onSignUpSubmit = () => {
+    const onSignupSubmit = () => {
         axios
             .post(`http://localhost:8000/auth/signup`, {
                 email: email,
@@ -91,6 +91,7 @@ export default function SignUp() {
             })
             .then(function (res) {
                 console.log(res);
+                alert('회원가입 완료!');
                 navigate('/signin');
             })
             .catch((err) => {
@@ -154,7 +155,7 @@ export default function SignUp() {
                 <Button
                     disabled={status}
                     data-testid="signup-button"
-                    onClick={onSignUpSubmit}
+                    onClick={onSignupSubmit}
                 >
                     회원가입
                 </Button>
