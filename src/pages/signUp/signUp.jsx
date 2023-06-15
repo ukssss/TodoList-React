@@ -82,6 +82,13 @@ export default function SignUp() {
     }, [isNameValid, isEmailValid, isPasswordValid, isRepasswordValid]);
 
     const navigate = useNavigate();
+    const isLoggedIn = localStorage.getItem('token');
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/todo');
+        }
+    }, [navigate, isLoggedIn]);
 
     const onSignupSubmit = () => {
         axios

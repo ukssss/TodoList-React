@@ -37,7 +37,7 @@ const App = () => {
     ]);
     return (
         <div>
-            <Suspense>
+            <Suspense fallback="Loading results...">
                 <RouterProvider router={router} />
             </Suspense>
         </div>
