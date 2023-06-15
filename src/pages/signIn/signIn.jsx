@@ -63,7 +63,7 @@ export default function SignIn() {
             })
             .then((res) => {
                 console.log(res);
-                localStorage.setItem('token', res.data.userToken);
+                localStorage.setItem('token', res.data.access_token);
                 navigate('/todos');
             })
             .catch((err) => {
