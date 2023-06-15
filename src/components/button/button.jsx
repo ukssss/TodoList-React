@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StyledButton = styled.button`
-    width: 100%;
+    width: ${(props) => (props.width ? '200px' : '100%')};
     height: 48px;
     padding: 0 10px;
     box-sizing: border-box;
@@ -13,9 +13,14 @@ const StyledButton = styled.button`
     background-color: ${(props) => props.disabled && '#d2d2d2'};
 `;
 
-function Button({ disabled, children, ...restProps }) {
+function Button({ disabled, width, children, ...restProps }) {
     return (
-        <StyledButton type="button" disabled={disabled} {...restProps}>
+        <StyledButton
+            type="button"
+            disabled={disabled}
+            width={width}
+            {...restProps}
+        >
             {children}
         </StyledButton>
     );
