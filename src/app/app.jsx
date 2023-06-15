@@ -29,7 +29,7 @@ const App = () => {
                     element: <SignUp />,
                 },
                 {
-                    path: '/todo',
+                    path: '/todos',
                     element: <Todo />,
                 },
             ],

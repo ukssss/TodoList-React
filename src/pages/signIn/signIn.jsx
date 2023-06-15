@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import LoginWrapper from '../../components/login/loginWrapper/loginWrapper';
 import LoginForm from '../../components/login/loginForm/loginForm';
@@ -9,6 +9,7 @@ import LoginInput from '../../components/login/loginInput/loginInput';
 
 import Button from '../../components/button/button';
 import ErrorDiv from '../../components/error/errorDiv/errorDiv';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignIn() {
     const [email, setEmail] = useState('');
@@ -52,6 +53,24 @@ export default function SignIn() {
         }
     }, [isEmailValid, isPasswordValid]);
 
+    const navigate = useNavigate();
+
+    const onSigninSubmit = () => {
+        axios
+            .post(`http://localhost:8000/auth/signin`, {
+                email: email,
+                password: password,
+            })
+            .then((res) => {
+                console.log(res);
+                localStorage.setItem('token', res.data.userToken);
+                navigate('/todos');
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     return (
         <LoginWrapper>
             <MyH2>로그인 페이지</MyH2>
@@ -82,10 +101,14 @@ export default function SignIn() {
                     ''
                 )}
 
-                <Button disabled={status}>로그인</Button>
-                <Button>
-                    <Link to="/signup">회원가입</Link>
+                <Button
+                    disabled={status}
+                    data-testid="signin-button"
+                    onClick={onSigninSubmit}
+                >
+                    로그인
                 </Button>
+                <Button></Button>
             </LoginForm>
         </LoginWrapper>
     );
