@@ -1,13 +1,39 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 import Button from '../../button/button';
 
 export default function TodoForm() {
     const [todo, setTodo] = useState('');
+    const access_token = localStorage.getItem('token');
 
     const addTodo = (e) => {
         setTodo(e.target.value);
+    };
+
+    const onTodoSubmit = async (e) => {
+        e.preventDefault();
+
+        await axios
+            .post(
+                `http://localhost:8000/todos`,
+                {
+                    todo: todo,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${access_token}`,
+                        'Content-Type': 'application/json',
+                    },
+                }
+            )
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     return (
@@ -16,9 +42,16 @@ export default function TodoForm() {
                 type="text"
                 name="todo"
                 placeholder="써보든가"
+                data-testid="new-todo-input"
                 onChange={addTodo}
             />
-            <Button width="yes">제출</Button>
+            <Button
+                width="yes"
+                data-testid="new-todo-add-button"
+                onClick={onTodoSubmit}
+            >
+                제출
+            </Button>
         </Form>
     );
 }
