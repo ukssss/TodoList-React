@@ -1,29 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
+import TodoItem from '../todoItem/todoItem';
+import { useTodoState } from '../../../context/todoContext/todoContext';
 
-export default function TodoList({ children }) {
+const TodoListBlock = styled.div``;
+
+export default function TodoList() {
+    const todos = useTodoState();
+
     return (
-        <Li>
-            <Label>
-                <Checkbox type="checkbox" />
-                <span>{children}</span>
-            </Label>
-        </Li>
+        <TodoListBlock>
+            {todos.map((todo) => (
+                <TodoItem
+                    key={todo.id}
+                    id={todo.id}
+                    text={todo.text}
+                    done={todo.done}
+                />
+            ))}
+        </TodoListBlock>
     );
 }
-
-const Li = styled.li`
-    background-color: yellowgreen;
-    width: 100%;
-    height: 48px;
-    margin-bottom: 16px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-`;
-
-const Label = styled.label``;
-
-const Checkbox = styled.input`
-    margin-right: 10px;
-`;
