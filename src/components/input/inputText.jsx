@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export default function InputText({ placeholder }) {
-    return <Input type="text" placeholder={placeholder} />;
+export default function InputText({ ...restProps }) {
+    return <Input {...restProps} />;
 }
 
 const Input = styled.input`

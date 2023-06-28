@@ -1,12 +1,20 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export default function TodoItem({ checked, text }) {
+import { useTodoDispatch } from '../../../context/todoContext';
+
+function TodoItem({ id, checked, text }) {
+    const dispatch = useTodoDispatch();
+    const onToggle = () => dispatch({ type: 'TOGGLE', id });
+    const onRemove = () => dispatch({ type: 'REMOVE', id });
+
     return (
         <Todo>
-            <Check type="checkbox" checked={checked} />
-            <Text>{text}</Text>
-            <Remove type="button">삭제</Remove>
+            <Check type="checkbox" checked={checked} onClick={onToggle} />
+            <Text checked={checked}>{text}</Text>
+            <Remove type="button" onClick={onRemove}>
+                삭제
+            </Remove>
             <Edit type="button">수정</Edit>
         </Todo>
     );
@@ -14,6 +22,14 @@ export default function TodoItem({ checked, text }) {
 
 const Todo = styled.li``;
 const Check = styled.input``;
+const Text = styled.div`
+    ${(props) =>
+        props.checked &&
+        css`
+            color: #ced4da;
+        `}
+`;
 const Remove = styled.button``;
 const Edit = styled.button``;
-const Text = styled.div``;
+
+export default React.memo(TodoItem);
