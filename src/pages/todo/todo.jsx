@@ -68,7 +68,15 @@ export default function Todo() {
         }
     };
 
-    const onRemove = async () => {};
+    const onRemove = async (id) => {
+        try {
+            const res = await api.delete(`/todos/${id}`);
+            console.log(res);
+            getTodos();
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     const onEdit = async () => {};
 
@@ -87,6 +95,7 @@ export default function Todo() {
                                 checked={todo.isCompleted}
                                 text={todo.todo}
                                 onToggle={onToggle}
+                                onRemove={onRemove}
                             />
                         ))}
                 </TodoList>
