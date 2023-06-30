@@ -1,16 +1,16 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-import { useTodoDispatch } from '../../../context/todoContext';
-
-function TodoItem({ id, checked, text }) {
-    const dispatch = useTodoDispatch();
-    const onToggle = () => dispatch({ type: 'TOGGLE', id });
-    const onRemove = () => dispatch({ type: 'REMOVE', id });
-
+function TodoItem({ id, todo, checked, text, onToggle, onRemove }) {
     return (
         <Todo>
-            <Check type="checkbox" checked={checked} onClick={onToggle} />
+            <Check
+                type="checkbox"
+                onChange={() => {
+                    onToggle(todo);
+                }}
+                defaultChecked={checked}
+            />
             <Text checked={checked}>{text}</Text>
             <Remove type="button" onClick={onRemove}>
                 삭제

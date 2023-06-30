@@ -41,7 +41,6 @@ export default function Todo() {
         try {
             const res = await api.get('/todos');
             setTodos(res.data);
-            console.log(res.data);
         } catch (err) {
             console.log(err);
         }
@@ -56,6 +55,19 @@ export default function Todo() {
         }
     };
 
+    const onToggle = async (todo) => {
+        try {
+            const res = await api.put(`/todos/${todo.id}`, {
+                isCompleted: !todo.isCompleted,
+                todo: todo.todo,
+            });
+            console.log(res.data);
+            getTodos();
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     return (
         <TodoProvider>
             <TodoTemplate>
@@ -63,12 +75,14 @@ export default function Todo() {
                 <TodoCreate createTodo={createTodo} />
                 <TodoList>
                     {todos &&
-                        todos.map((todo) => (
+                        todos.map((todo, index) => (
                             <TodoItem
                                 key={todo.id}
                                 id={todo.id}
+                                todo={todo}
                                 checked={todo.isCompleted}
                                 text={todo.todo}
+                                onToggle={onToggle}
                             />
                         ))}
                 </TodoList>
