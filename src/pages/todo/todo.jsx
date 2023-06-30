@@ -68,6 +68,10 @@ export default function Todo() {
         }
     };
 
+    const onRemove = async () => {};
+
+    const onEdit = async () => {};
+
     return (
         <TodoProvider>
             <TodoTemplate>

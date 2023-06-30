@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-function TodoItem({ id, todo, checked, text, onToggle, onRemove }) {
+function TodoItem({ id, todo, checked, text, onToggle, onRemove, onEdit }) {
     return (
         <Todo>
             <Check
@@ -12,15 +12,24 @@ function TodoItem({ id, todo, checked, text, onToggle, onRemove }) {
                 defaultChecked={checked}
             />
             <Text checked={checked}>{text}</Text>
-            <Remove type="button" onClick={onRemove}>
+            <Edit type="button" onClick={onEdit} data-testid="delete-button">
+                수정
+            </Edit>
+            <Remove
+                type="button"
+                onClick={onRemove}
+                data-testid="modify-button"
+            >
                 삭제
             </Remove>
-            <Edit type="button">수정</Edit>
         </Todo>
     );
 }
 
-const Todo = styled.li``;
+const Todo = styled.li`
+    display: flex;
+    flex-direction: row;
+`;
 const Check = styled.input``;
 const Text = styled.div`
     ${(props) =>
