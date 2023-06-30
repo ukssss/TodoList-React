@@ -17,7 +17,9 @@ function TodoItem({ id, todo, checked, text, onToggle, onRemove, onEdit }) {
             </Edit>
             <Remove
                 type="button"
-                onClick={onRemove}
+                onClick={() => {
+                    onRemove(todo.id);
+                }}
                 data-testid="modify-button"
             >
                 삭제
