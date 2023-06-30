@@ -107,67 +107,69 @@ export default function SignUp() {
     };
 
     return (
-        <LoginWrapper>
-            <MyH2>회원가입 페이지</MyH2>
-            <LoginForm method="post" id="signin-form">
-                <LoginInfo>Your name</LoginInfo>
-                <LoginInput
-                    type="text"
-                    name="username"
-                    onChange={onChangeName}
-                />
+        <>
+            <LoginWrapper>
+                <MyH2>회원가입 페이지</MyH2>
+                <LoginForm method="post" id="signin-form">
+                    <LoginInfo>Your name</LoginInfo>
+                    <LoginInput
+                        type="text"
+                        name="username"
+                        onChange={onChangeName}
+                    />
 
-                <LoginInfo>Email</LoginInfo>
-                <LoginInput
-                    type="text"
-                    name="userEmail"
-                    data-testid="email-input"
-                    onChange={onChangeEmail}
-                />
-                {emailCheck ? (
-                    <ErrorDiv>이메일 : @ 이 누락되었습니다.</ErrorDiv>
-                ) : (
-                    ''
-                )}
+                    <LoginInfo>Email</LoginInfo>
+                    <LoginInput
+                        type="text"
+                        name="userEmail"
+                        data-testid="email-input"
+                        onChange={onChangeEmail}
+                    />
+                    {emailCheck ? (
+                        <ErrorDiv>이메일 : @ 이 누락되었습니다.</ErrorDiv>
+                    ) : (
+                        ''
+                    )}
 
-                <LoginInfo>Password</LoginInfo>
-                <LoginInput
-                    type="password"
-                    name="userPassword"
-                    data-testid="password-input"
-                    placeholder="At least 8 characters"
-                    onChange={onChangePassword}
-                />
-                {passwordCheck ? (
-                    <ErrorDiv>비밀번호 : 8자 이상으로 사용하세요.</ErrorDiv>
-                ) : (
-                    ''
-                )}
+                    <LoginInfo>Password</LoginInfo>
+                    <LoginInput
+                        type="password"
+                        name="userPassword"
+                        data-testid="password-input"
+                        placeholder="At least 8 characters"
+                        onChange={onChangePassword}
+                    />
+                    {passwordCheck ? (
+                        <ErrorDiv>비밀번호 : 8자 이상으로 사용하세요.</ErrorDiv>
+                    ) : (
+                        ''
+                    )}
 
-                <LoginInfo>Re-enter password</LoginInfo>
-                <LoginInput
-                    type="password"
-                    name="userPassword"
-                    data-testid="password-input"
-                    onChange={onChangeRepassword}
-                />
-                {repasswordCheck ? (
-                    <ErrorDiv>
-                        비밀번호 : 비밀번호가 동일하지 않습니다.
-                    </ErrorDiv>
-                ) : (
-                    ''
-                )}
+                    <LoginInfo>Re-enter password</LoginInfo>
+                    <LoginInput
+                        type="password"
+                        name="userPassword"
+                        data-testid="password-input"
+                        onChange={onChangeRepassword}
+                    />
+                    {repasswordCheck ? (
+                        <ErrorDiv>
+                            비밀번호 : 비밀번호가 동일하지 않습니다.
+                        </ErrorDiv>
+                    ) : (
+                        ''
+                    )}
 
-                <Button
-                    disabled={status}
-                    data-testid="signup-button"
-                    onClick={onSignupSubmit}
-                >
-                    회원가입
-                </Button>
-            </LoginForm>
-        </LoginWrapper>
+                    <Button
+                        disabled={status}
+                        data-testid="signup-button"
+                        onClick={onSignupSubmit}
+                    >
+                        회원가입
+                    </Button>
+                </LoginForm>
+            </LoginWrapper>
+        </>
     );
 }
 

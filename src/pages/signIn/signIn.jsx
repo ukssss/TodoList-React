@@ -83,45 +83,47 @@ export default function SignIn() {
     };
 
     return (
-        <LoginWrapper>
-            <MyH2>로그인 페이지</MyH2>
-            <LoginForm method="post" id="signin-form">
-                <LoginInfo>Email</LoginInfo>
-                <LoginInput
-                    type="text"
-                    name="userEmail"
-                    data-testid="email-input"
-                    onChange={onChangeEmail}
-                />
-                {emailError ? (
-                    <ErrorDiv>이메일 : @ 이 누락되었습니다</ErrorDiv>
-                ) : (
-                    ''
-                )}
+        <>
+            <LoginWrapper>
+                <MyH2>로그인 페이지</MyH2>
+                <LoginForm method="post" id="signin-form">
+                    <LoginInfo>Email</LoginInfo>
+                    <LoginInput
+                        type="text"
+                        name="userEmail"
+                        data-testid="email-input"
+                        onChange={onChangeEmail}
+                    />
+                    {emailError ? (
+                        <ErrorDiv>이메일 : @ 이 누락되었습니다</ErrorDiv>
+                    ) : (
+                        ''
+                    )}
 
-                <LoginInfo>Password</LoginInfo>
-                <LoginInput
-                    type="password"
-                    name="userPassword"
-                    data-testid="password-input"
-                    onChange={onChangePassword}
-                />
-                {passwordError ? (
-                    <ErrorDiv>비밀번호 : 8자 이상으로 사용하세요.</ErrorDiv>
-                ) : (
-                    ''
-                )}
+                    <LoginInfo>Password</LoginInfo>
+                    <LoginInput
+                        type="password"
+                        name="userPassword"
+                        data-testid="password-input"
+                        onChange={onChangePassword}
+                    />
+                    {passwordError ? (
+                        <ErrorDiv>비밀번호 : 8자 이상으로 사용하세요.</ErrorDiv>
+                    ) : (
+                        ''
+                    )}
 
-                <Button
-                    disabled={status}
-                    data-testid="signin-button"
-                    onClick={onSigninSubmit}
-                >
-                    로그인
-                </Button>
-                <Button onClick={onDirectSignup}>회원가입</Button>
-            </LoginForm>
-        </LoginWrapper>
+                    <Button
+                        disabled={status}
+                        data-testid="signin-button"
+                        onClick={onSigninSubmit}
+                    >
+                        로그인
+                    </Button>
+                    <Button onClick={onDirectSignup}>회원가입</Button>
+                </LoginForm>
+            </LoginWrapper>
+        </>
     );
 }
 
