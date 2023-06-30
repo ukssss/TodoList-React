@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 
 function TodoItem({
@@ -9,10 +9,11 @@ function TodoItem({
     onToggle,
     onRemove,
     edit,
-    setEdit,
     todoId,
-    setTodoId,
+    editTodo,
+    setEditTodo,
     onEdit,
+    onEditMode,
     onCancel,
 }) {
     return (
@@ -27,15 +28,28 @@ function TodoItem({
 
             {edit && todo.id === todoId ? (
                 <>
-                    <EditText type="text" data-testid="modify-input" />
-                    <Save type="button" data-testid="submit-button">
+                    <EditText
+                        type="text"
+                        data-testid="modify-input"
+                        value={editTodo}
+                        onChange={(e) => {
+                            setEditTodo(e.target.value);
+                        }}
+                    />
+                    <Save
+                        type="button"
+                        data-testid="submit-button"
+                        onClick={() => {
+                            onEdit(todo, editTodo);
+                        }}
+                    >
                         제출
                     </Save>
                     <Cancel
                         type="button"
                         data-testid="cancel-button"
                         onClick={() => {
-                            setEdit(false);
+                            onCancel(todo);
                         }}
                     >
                         취소
@@ -46,10 +60,8 @@ function TodoItem({
                     <Text checked={checked}>{text}</Text>
                     <Edit
                         type="button"
-                        onClick={(e) => {
-                            setEdit(true);
-                            setTodoId(todo.id);
-                            console.log(todo.id);
+                        onClick={() => {
+                            onEditMode(todo);
                         }}
                         data-testid="delete-button"
                     >

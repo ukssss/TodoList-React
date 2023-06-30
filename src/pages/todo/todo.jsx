@@ -34,6 +34,7 @@ export default function Todo() {
     const [todos, setTodos] = useState([]);
     const [edit, setEdit] = useState(false);
     const [todoId, setTodoId] = useState(-1);
+    const [editTodo, setEditTodo] = useState('');
 
     useEffect(() => {
         getTodos();
@@ -48,9 +49,9 @@ export default function Todo() {
         }
     };
 
-    const createTodo = async (todoData) => {
+    const createTodo = async (todo) => {
         try {
-            const res = await api.post('/todos', todoData);
+            const res = await api.post('/todos', todo);
             getTodos(res.data);
         } catch (err) {
             console.log(err);
@@ -80,9 +81,30 @@ export default function Todo() {
         }
     };
 
-    const onEdit = async () => {};
+    const onEditMode = async (todo) => {
+        setEdit(true);
+        setTodoId(todo.id);
+        setEditTodo(todo.todo);
+    };
 
-    const onCancel = async () => {};
+    const onEdit = async (todo, editTodo) => {
+        try {
+            const res = await api.put(`/todos/${todo.id}`, {
+                todo: editTodo,
+                isCompleted: todo.isCompleted,
+            });
+            setEdit(false);
+            console.log(res.data);
+            getTodos();
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const onCancel = async (todo) => {
+        setEditTodo(todo.todo);
+        setEdit(false);
+    };
 
     return (
         <TodoProvider>
@@ -104,7 +126,10 @@ export default function Todo() {
                                 setEdit={setEdit}
                                 todoId={todoId}
                                 setTodoId={setTodoId}
+                                editTodo={editTodo}
+                                setEditTodo={setEditTodo}
                                 onEdit={onEdit}
+                                onEditMode={onEditMode}
                                 onCancel={onCancel}
                             />
                         ))}
