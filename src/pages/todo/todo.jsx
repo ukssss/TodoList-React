@@ -9,7 +9,7 @@ import TodoList from '../../components/todo/todoList/todoList';
 import TodoTemplate from '../../components/todo/todoTemplate/todoTemplate';
 import TodoItem from '../../components/todo/todoItem/todoItem';
 
-import { TodoProvider, useTodoState } from '../../context/todoContext';
+import { TodoProvider } from '../../context/todoContext';
 
 const access_token = localStorage.getItem('token');
 const url = DEV_ADDRESS;
