@@ -1,6 +1,5 @@
 import React from 'react';
 import Header from '../../header/header';
-import Footer from '../../footer/footer';
 import { Outlet } from 'react-router-dom';
 import GlobalStyle from '../../../style/globalStyle/globalStyle';
 
@@ -13,7 +12,6 @@ const BaseLayout = () => {
                 <main>
                     <Outlet />
                 </main>
-                <Footer />
             </div>
         </>
     );

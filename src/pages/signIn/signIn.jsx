@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 import LoginWrapper from '../../components/login/loginWrapper/loginWrapper';
 import LoginForm from '../../components/login/loginForm/loginForm';
-import LoginInfo from '../../components/login/loginInfo/loginInfo';
 import LoginInput from '../../components/login/loginInput/loginInput';
 
 import Button from '../../components/button/button';
 import ErrorDiv from '../../components/error/errorDiv/errorDiv';
-import { useNavigate } from 'react-router-dom';
+import SignInUpStyle from '../../style/signInUpStyle/signInUpStyle';
 
 export default function SignIn() {
     const [email, setEmail] = useState('');
@@ -84,15 +84,16 @@ export default function SignIn() {
 
     return (
         <>
+            <SignInUpStyle />
             <LoginWrapper>
-                <MyH2>로그인 페이지</MyH2>
+                <MyH2>Sign in</MyH2>
                 <LoginForm method="post" id="signin-form">
-                    <LoginInfo>Email</LoginInfo>
                     <LoginInput
                         type="text"
                         name="userEmail"
                         data-testid="email-input"
                         onChange={onChangeEmail}
+                        placeholder="Email"
                     />
                     {emailError ? (
                         <ErrorDiv>이메일 : @ 이 누락되었습니다</ErrorDiv>
@@ -100,12 +101,12 @@ export default function SignIn() {
                         ''
                     )}
 
-                    <LoginInfo>Password</LoginInfo>
                     <LoginInput
                         type="password"
                         name="userPassword"
                         data-testid="password-input"
                         onChange={onChangePassword}
+                        placeholder="Password"
                     />
                     {passwordError ? (
                         <ErrorDiv>비밀번호 : 8자 이상으로 사용하세요.</ErrorDiv>
@@ -118,10 +119,12 @@ export default function SignIn() {
                         data-testid="signin-button"
                         onClick={onSigninSubmit}
                     >
-                        로그인
+                        SIGN IN
                     </Button>
-                    <Button onClick={onDirectSignup}>회원가입</Button>
                 </LoginForm>
+            </LoginWrapper>
+            <LoginWrapper>
+                <Button onClick={onDirectSignup}>SIGN UP</Button>
             </LoginWrapper>
         </>
     );
@@ -129,6 +132,7 @@ export default function SignIn() {
 
 const MyH2 = styled.h2`
     font-size: 24px;
+    font-weight: bold;
     color: #6a24fe;
     margin-bottom: 20px;
 `;

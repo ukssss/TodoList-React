@@ -8,6 +8,8 @@ const LoginDiv = styled.div`
     box-sizing: border-box;
 `;
 
-export default function LoginWrapper({ children }) {
+function LoginWrapper({ children }) {
     return <LoginDiv>{children}</LoginDiv>;
 }
+
+export default LoginWrapper;

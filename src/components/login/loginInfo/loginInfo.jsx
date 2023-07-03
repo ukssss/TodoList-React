@@ -7,6 +7,8 @@ const LoginText = styled.div`
     margin-bottom: 5px;
 `;
 
-export default function LoginInfo({ children }) {
+function LoginInfo({ children }) {
     return <LoginText>{children}</LoginText>;
 }
+
+export default LoginInfo;
