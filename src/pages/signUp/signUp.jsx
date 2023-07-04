@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import axios from 'axios';
 
-import LoginWrapper from '../../components/login/loginWrapper/loginWrapper';
+import LoginDiv from '../../components/login/loginDiv/loginDiv';
 import LoginForm from '../../components/login/loginForm/loginForm';
 import LoginInfo from '../../components/login/loginInfo/loginInfo';
 import LoginInput from '../../components/login/loginInput/loginInput';
 
+import MyH2 from '../../components/section/myH2/myH2';
 import Button from '../../components/button/button';
 import ErrorDiv from '../../components/error/errorDiv/errorDiv';
+import SignInUpStyle from '../../style/signInUpStyle/signInUpStyle';
 
 export default function SignUp() {
     const [name, setName] = useState('');
@@ -108,8 +109,9 @@ export default function SignUp() {
 
     return (
         <>
-            <LoginWrapper>
-                <MyH2>회원가입 페이지</MyH2>
+            <SignInUpStyle />
+            <LoginDiv>
+                <MyH2>Sign Up</MyH2>
                 <LoginForm method="post" id="signin-form">
                     <LoginInfo>Your name</LoginInfo>
                     <LoginInput
@@ -168,13 +170,7 @@ export default function SignUp() {
                         회원가입
                     </Button>
                 </LoginForm>
-            </LoginWrapper>
+            </LoginDiv>
         </>
     );
 }
-
-const MyH2 = styled.h2`
-    font-size: 24px;
-    color: #6a24fe;
-    margin-bottom: 20px;
-`;

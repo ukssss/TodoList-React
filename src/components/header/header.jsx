@@ -1,14 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { styled } from 'styled-components';
 
 const Header = () => {
     return (
         <div>
-            <Link to="/">
-                <h1>원티드 프리온보딩 프론트엔드 선발과제</h1>
-            </Link>
+            <MyH1>
+                <StyledLink to="/">TodoList - React</StyledLink>
+            </MyH1>
         </div>
     );
 };
+
+const MyH1 = styled.h1``;
+
+const StyledLink = styled(Link)`
+    text-decoration: none;
+    font-size: 32px;
+    font-weight: bold;
+    color: #6a24fe;
+    margin-bottom: 20px;
+`;
 
 export default Header;
