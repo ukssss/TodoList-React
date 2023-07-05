@@ -1,7 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
 const SignInUpStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 * {
         box-sizing: border-box;
 }

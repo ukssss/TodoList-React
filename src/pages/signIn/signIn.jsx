@@ -12,116 +12,103 @@ import ErrorDiv from '../../components/error/errorDiv/errorDiv';
 import SignInUpStyle from '../../style/signInUpStyle/signInUpStyle';
 
 export default function SignIn() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [status, setStatus] = useState(true);
-    const [emailError, setEmailError] = useState(false);
-    const [passwordError, setPasswordError] = useState(false);
+    // signIn
+    const [login, setLogin] = useState({
+        email: '',
+        password: '',
+        status: true,
+        emailCheck: false,
+        passwordCheck: false,
+    });
 
     const onChangeEmail = (e) => {
-        setEmail(e.target.value);
+        setLogin((prevState) => {
+            return { ...prevState, email: e.target.value };
+        });
     };
 
     const onChangePassword = (e) => {
-        setPassword(e.target.value);
+        setLogin((prevState) => {
+            return { ...prevState, password: e.target.value };
+        });
     };
 
-    let isEmailValid = email.includes('@');
-    let isPasswordValid = password.length >= 8;
+    const { email, password, status, emailCheck, passwordCheck } = login;
+    const isEmailValid = email.includes('@') && email.includes('.com'); // 이메일 유효성 검사
+    const isPasswordValid = password.length >= 8; // 비밀번호 유효성 검사
 
-    useEffect(() => {
-        if (email.length > 0 && !isEmailValid) {
-            setEmailError(true);
-        } else {
-            setEmailError(false);
-        }
-    }, [email.length, isEmailValid]);
-
-    useEffect(() => {
-        if (password.length > 0 && !isPasswordValid) {
-            setPasswordError(true);
-        } else {
-            setPasswordError(false);
-        }
-    }, [password.length, isPasswordValid]);
-
-    useEffect(() => {
+    const onChangeStatus = () => {
         if (isEmailValid && isPasswordValid) {
-            setStatus(false);
+            setLogin((prevState) => {
+                return { ...prevState, status: false };
+            });
         } else {
-            setStatus(true);
+            setLogin((prevState) => {
+                return { ...prevState, status: true };
+            });
         }
-    }, [isEmailValid, isPasswordValid]);
+    };
 
+    const onCheckEmail = () => {
+        if (!isEmailValid && email.length > 0) {
+            setLogin((prevState) => {
+                return { ...prevState, emailCheck: true };
+            });
+        } else {
+            setLogin((prevState) => {
+                return { ...prevState, emailCheck: false };
+            });
+        }
+    };
+    const onCheckPassword = () => {
+        if (!isPasswordValid && password.length > 0) {
+            setLogin((prevState) => {
+                return { ...prevState, passwordCheck: true };
+            });
+        } else {
+            setLogin((prevState) => {
+                return { ...prevState, passwordCheck: false };
+            });
+        }
+    };
+
+    const onSubmit = async () => {
+        try {
+        } catch (err) {}
+    };
+
+    useEffect(onChangeStatus, [isEmailValid, isPasswordValid]);
+    useEffect(onCheckEmail, [isEmailValid, email.length]);
+    useEffect(onCheckPassword, [isPasswordValid, password.length]);
+
+    // navigate
     const navigate = useNavigate();
     const isLoggedIn = localStorage.getItem('token');
 
-    useEffect(() => {
-        if (isLoggedIn) {
-            navigate('/todo');
-        }
-    }, [navigate, isLoggedIn]);
+    const onCheckLoggedIn = () => {
+        isLoggedIn && navigate('/todo');
+    };
 
-    const onDirectSignup = () => {
+    const onDirectSignUp = () => {
         navigate('/signup');
     };
 
-    const onSigninSubmit = () => {
-        axios
-            .post(`http://localhost:8000/auth/signin`, {
-                email: email,
-                password: password,
-            })
-            .then((res) => {
-                console.log(res);
-                localStorage.setItem('token', res.data.access_token);
-                navigate('/todo');
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
+    useEffect(onCheckLoggedIn, [isLoggedIn, navigate]);
 
     return (
         <>
             <SignInUpStyle />
             <LoginDiv>
-                <MyH2>Sign in</MyH2>
-                <LoginForm method="post" id="signin-form">
-                    <LoginInput
-                        type="text"
-                        name="userEmail"
-                        data-testid="email-input"
-                        onChange={onChangeEmail}
-                        placeholder="Email"
-                    />
-                    {emailError ? (
-                        <ErrorDiv>이메일 : @ 이 누락되었습니다</ErrorDiv>
-                    ) : (
-                        ''
-                    )}
-
-                    <LoginInput
-                        type="password"
-                        name="userPassword"
-                        data-testid="password-input"
-                        onChange={onChangePassword}
-                        placeholder="Password"
-                    />
-                    {passwordError ? (
-                        <ErrorDiv>비밀번호 : 8자 이상으로 사용하세요.</ErrorDiv>
-                    ) : (
-                        ''
-                    )}
-
-                    <Button
-                        disabled={status}
-                        data-testid="signin-button"
-                        onClick={onSigninSubmit}
-                    >
-                        SIGN IN
+                <MyH2>Sign In</MyH2>
+                <LoginForm>
+                    <LoginInput type="text" placeholder="Email" onChange={onChangeEmail} />
+                    {emailCheck ? <ErrorDiv>이메일 양식에 어긋납니다.</ErrorDiv> : ''}
+                    <LoginInput type="password" placeholder="Password" onChange={onChangePassword} />
+                    {passwordCheck ? <ErrorDiv>올바르지 않은 비밀번호 양식입니다.</ErrorDiv> : ''}
+                    <Button disabled={status} onClick={onSubmit}>
+                        Sign In
                     </Button>
-                    <Button onClick={onDirectSignup}>SIGN UP</Button>
+                    <Button onClick={onDirectSignUp}>Sign Up</Button>
                 </LoginForm>
             </LoginDiv>
         </>
