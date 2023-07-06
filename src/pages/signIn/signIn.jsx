@@ -1,134 +1,136 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import axios from 'axios';
-
-import LoginWrapper from '../../components/login/loginWrapper/loginWrapper';
-import LoginForm from '../../components/login/loginForm/loginForm';
-import LoginInfo from '../../components/login/loginInfo/loginInfo';
-import LoginInput from '../../components/login/loginInput/loginInput';
-
-import Button from '../../components/button/button';
-import ErrorDiv from '../../components/error/errorDiv/errorDiv';
 import { useNavigate } from 'react-router-dom';
 
+import LoginDiv from '../../components/login/loginDiv/loginDiv';
+import LoginForm from '../../components/login/loginForm/loginForm';
+import LoginInput from '../../components/login/loginInput/loginInput';
+
+import MyH2 from '../../components/section/myH2/myH2';
+import Button from '../../components/button/button';
+import ErrorDiv from '../../components/error/errorDiv/errorDiv';
+import SignInUpStyle from '../../style/signInUpStyle/signInUpStyle';
+
+import { DEV_ADDRESS } from '../../api/api';
+
 export default function SignIn() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [status, setStatus] = useState(true);
-    const [emailError, setEmailError] = useState(false);
-    const [passwordError, setPasswordError] = useState(false);
+    // signIn
+
+    const [login, setLogin] = useState({
+        email: '',
+        password: '',
+        status: true,
+        emailCheck: false,
+        passwordCheck: false,
+    });
 
     const onChangeEmail = (e) => {
-        setEmail(e.target.value);
+        setLogin((prevState) => {
+            return { ...prevState, email: e.target.value };
+        });
     };
 
     const onChangePassword = (e) => {
-        setPassword(e.target.value);
+        setLogin((prevState) => {
+            return { ...prevState, password: e.target.value };
+        });
     };
 
-    let isEmailValid = email.includes('@');
-    let isPasswordValid = password.length >= 8;
+    const { email, password, status, emailCheck, passwordCheck } = login;
+    const isEmailValid = email.includes('@') && email.includes('.com'); // 이메일 유효성 검사
+    const isPasswordValid = password.length >= 8; // 비밀번호 유효성 검사
 
-    useEffect(() => {
-        if (email.length > 0 && !isEmailValid) {
-            setEmailError(true);
-        } else {
-            setEmailError(false);
-        }
-    }, [email.length, isEmailValid]);
-
-    useEffect(() => {
-        if (password.length > 0 && !isPasswordValid) {
-            setPasswordError(true);
-        } else {
-            setPasswordError(false);
-        }
-    }, [password.length, isPasswordValid]);
-
-    useEffect(() => {
+    const onChangeStatus = () => {
         if (isEmailValid && isPasswordValid) {
-            setStatus(false);
+            setLogin((prevState) => {
+                return { ...prevState, status: false };
+            });
         } else {
-            setStatus(true);
+            setLogin((prevState) => {
+                return { ...prevState, status: true };
+            });
         }
-    }, [isEmailValid, isPasswordValid]);
-
-    const navigate = useNavigate();
-    const isLoggedIn = localStorage.getItem('token');
-
-    useEffect(() => {
-        if (isLoggedIn) {
-            navigate('/todo');
-        }
-    }, [navigate, isLoggedIn]);
-
-    const onDirectSignup = () => {
-        navigate('/signup');
     };
 
-    const onSigninSubmit = () => {
-        axios
-            .post(`http://localhost:8000/auth/signin`, {
-                email: email,
-                password: password,
-            })
+    const onCheckEmail = () => {
+        if (!isEmailValid && email.length > 0) {
+            setLogin((prevState) => {
+                return { ...prevState, emailCheck: true };
+            });
+        } else {
+            setLogin((prevState) => {
+                return { ...prevState, emailCheck: false };
+            });
+        }
+    };
+    const onCheckPassword = () => {
+        if (!isPasswordValid && password.length > 0) {
+            setLogin((prevState) => {
+                return { ...prevState, passwordCheck: true };
+            });
+        } else {
+            setLogin((prevState) => {
+                return { ...prevState, passwordCheck: false };
+            });
+        }
+    };
+
+    const url = DEV_ADDRESS;
+    const api = axios.create({
+        baseURL: url,
+        headers: {
+            'Content-Type': `application/json`,
+        },
+    });
+
+    const onSubmit = () => {
+        api.post('/auth/signin', {
+            email,
+            password,
+        })
             .then((res) => {
-                console.log(res);
                 localStorage.setItem('token', res.data.access_token);
                 navigate('/todo');
             })
             .catch((err) => {
-                console.log(err);
+                alert('존재하지 않는 계정입니다');
             });
     };
 
+    useEffect(onChangeStatus, [isEmailValid, isPasswordValid]);
+    useEffect(onCheckEmail, [isEmailValid, email.length]);
+    useEffect(onCheckPassword, [isPasswordValid, password.length]);
+
+    // navigate
+    const navigate = useNavigate();
+    const isLoggedIn = localStorage.getItem('token');
+
+    const onCheckLoggedIn = () => {
+        isLoggedIn && navigate('/todo');
+    };
+
+    const onDirectSignUp = () => {
+        navigate('/signup');
+    };
+
+    useEffect(onCheckLoggedIn, [isLoggedIn, navigate]);
+
     return (
         <>
-            <LoginWrapper>
-                <MyH2>로그인 페이지</MyH2>
-                <LoginForm method="post" id="signin-form">
-                    <LoginInfo>Email</LoginInfo>
-                    <LoginInput
-                        type="text"
-                        name="userEmail"
-                        data-testid="email-input"
-                        onChange={onChangeEmail}
-                    />
-                    {emailError ? (
-                        <ErrorDiv>이메일 : @ 이 누락되었습니다</ErrorDiv>
-                    ) : (
-                        ''
-                    )}
-
-                    <LoginInfo>Password</LoginInfo>
-                    <LoginInput
-                        type="password"
-                        name="userPassword"
-                        data-testid="password-input"
-                        onChange={onChangePassword}
-                    />
-                    {passwordError ? (
-                        <ErrorDiv>비밀번호 : 8자 이상으로 사용하세요.</ErrorDiv>
-                    ) : (
-                        ''
-                    )}
-
-                    <Button
-                        disabled={status}
-                        data-testid="signin-button"
-                        onClick={onSigninSubmit}
-                    >
-                        로그인
+            <SignInUpStyle />
+            <LoginDiv>
+                <MyH2>Sign In</MyH2>
+                <LoginForm>
+                    <LoginInput type="text" placeholder="Email" onChange={onChangeEmail} />
+                    {emailCheck ? <ErrorDiv>이메일 양식에 어긋납니다.</ErrorDiv> : ''}
+                    <LoginInput type="password" placeholder="Password" onChange={onChangePassword} />
+                    {passwordCheck ? <ErrorDiv>올바르지 않은 비밀번호 양식입니다.</ErrorDiv> : ''}
+                    <Button disabled={status} onClick={onSubmit}>
+                        Sign In
                     </Button>
-                    <Button onClick={onDirectSignup}>회원가입</Button>
+                    <Button onClick={onDirectSignUp}>Sign Up</Button>
                 </LoginForm>
-            </LoginWrapper>
+            </LoginDiv>
         </>
     );
 }
-
-const MyH2 = styled.h2`
-    font-size: 24px;
-    color: #6a24fe;
-    margin-bottom: 20px;
-`;
