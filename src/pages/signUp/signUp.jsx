@@ -1,87 +1,148 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { DEV_ADDRESS } from '../../api/api';
 import axios from 'axios';
+
+import SignInUpStyle from '../../style/signInUpStyle/signInUpStyle';
 
 import LoginDiv from '../../components/login/loginDiv/loginDiv';
 import LoginForm from '../../components/login/loginForm/loginForm';
-import LoginInfo from '../../components/login/loginInfo/loginInfo';
+import LoginLabel from '../../components/login/loginLabel/loginLabel';
 import LoginInput from '../../components/login/loginInput/loginInput';
 
 import MyH2 from '../../components/section/myH2/myH2';
 import Button from '../../components/button/button';
 import ErrorDiv from '../../components/error/errorDiv/errorDiv';
-import SignInUpStyle from '../../style/signInUpStyle/signInUpStyle';
 
 export default function SignUp() {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [repassword, setRepassword] = useState('');
-
-    const [emailCheck, setEmailCheck] = useState(false);
-    const [passwordCheck, setPasswordCheck] = useState(false);
-    const [repasswordCheck, setRepasswordCheck] = useState(false);
-
-    const [status, setStatus] = useState(true);
+    const [account, setAccount] = useState({
+        name: '',
+        email: '',
+        password: '',
+        repassword: '',
+        emailCheck: false,
+        passwordCheck: false,
+        repasswordCheck: false,
+        status: true,
+    });
 
     const onChangeName = (e) => {
-        setName(e.target.value);
+        setAccount((prevState) => {
+            return { ...prevState, name: e.target.value };
+        });
     };
 
     const onChangeEmail = (e) => {
-        setEmail(e.target.value);
+        setAccount((prevState) => {
+            return { ...prevState, email: e.target.value };
+        });
     };
 
     const onChangePassword = (e) => {
-        setPassword(e.target.value);
+        setAccount((prevState) => {
+            return { ...prevState, password: e.target.value };
+        });
     };
 
     const onChangeRepassword = (e) => {
-        setRepassword(e.target.value);
+        setAccount((prevState) => {
+            return { ...prevState, repassword: e.target.value };
+        });
     };
 
-    let isNameValid = name.length > 0;
-    let isEmailValid = email.includes('@');
-    let isPasswordValid = password.length >= 8;
-    let isRepasswordValid = password === repassword;
+    const { name, email, password, repassword, emailCheck, passwordCheck, repasswordCheck, status } = account;
 
-    useEffect(() => {
+    // 이메일 유효성 검사 (이메일 조건: @ 포함)
+
+    const isEmailValid = email.includes('@') && email.includes('.com');
+    const onCheckEmail = () => {
         if (email.length > 0 && !isEmailValid) {
-            setEmailCheck(true);
+            setAccount((prevState) => {
+                return { ...prevState, emailCheck: true };
+            });
         } else {
-            setEmailCheck(false);
+            setAccount((prevState) => {
+                return { ...prevState, emailCheck: false };
+            });
         }
-    }, [email.length, isEmailValid]);
+    };
 
-    useEffect(() => {
+    useEffect(onCheckEmail, [email.length, isEmailValid]);
+
+    // 비밀번호 유효성 검사 (비밀번호 조건: 8자 이상)
+
+    const isPasswordValid = password.length >= 8;
+    const onCheckPassword = () => {
         if (password.length > 0 && !isPasswordValid) {
-            setPasswordCheck(true);
+            setAccount((prevState) => {
+                return { ...prevState, passwordCheck: true };
+            });
         } else {
-            setPasswordCheck(false);
+            setAccount((prevState) => {
+                return { ...prevState, passwordCheck: false };
+            });
         }
-    }, [password.length, isPasswordValid]);
+    };
 
-    useEffect(() => {
-        if (repassword.length > 0 && !isRepasswordValid) {
-            setRepasswordCheck(true);
+    useEffect(onCheckPassword, [password.length, isPasswordValid]);
+
+    const isRepasswordValid = password === repassword;
+    const onCheckRepassword = () => {
+        if (password.length > 0 && !isRepasswordValid) {
+            setAccount((prevState) => {
+                return { ...prevState, repasswordCheck: true };
+            });
         } else {
-            setRepasswordCheck(false);
+            setAccount((prevState) => {
+                return { ...prevState, repasswordCheck: false };
+            });
         }
-    }, [repassword.length, isRepasswordValid]);
+    };
 
-    useEffect(() => {
-        if (
-            isNameValid &&
-            isEmailValid &&
-            isPasswordValid &&
-            isRepasswordValid
-        ) {
-            setStatus(false);
+    useEffect(onCheckRepassword, [password.length, isRepasswordValid]);
+
+    // 입력된 이메일과 비밀번호가 유효성 검사를 통과하지 못한다면 button에 disabled 속성을 부여해주세요
+
+    const onChangeStatus = () => {
+        if (isEmailValid && isPasswordValid && isRepasswordValid) {
+            setAccount((prevState) => {
+                return { ...prevState, status: false };
+            });
         } else {
-            setStatus(true);
+            setAccount((prevState) => {
+                return { ...prevState, status: true };
+            });
         }
-    }, [isNameValid, isEmailValid, isPasswordValid, isRepasswordValid]);
+    };
 
+    useEffect(onChangeStatus, [isEmailValid, isPasswordValid, isRepasswordValid]);
+
+    // 회원가입
+
+    const url = DEV_ADDRESS;
+    const api = axios.create({
+        baseURL: url,
+        headers: {
+            'Content-Type': `application/json`,
+        },
+    });
+
+    const onSubmit = () => {
+        api.post('/auth/signup', {
+            name,
+            email,
+            password,
+        })
+            .then((res) => {
+                alert('정상적으로 회원가입 되셨습니다');
+                navigate('/signin');
+            })
+            .catch((err) => {
+                alert('기존에 가입된 계정입니다');
+            });
+    };
+
+    // navigate
     const navigate = useNavigate();
     const isLoggedIn = localStorage.getItem('token');
 
@@ -91,20 +152,8 @@ export default function SignUp() {
         }
     }, [navigate, isLoggedIn]);
 
-    const onSignupSubmit = () => {
-        axios
-            .post(`http://localhost:8000/auth/signup`, {
-                email: email,
-                password: password,
-            })
-            .then(function (res) {
-                console.log(res);
-                alert('회원가입 완료!');
-                navigate('/signin');
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+    const onNavigateSignIn = () => {
+        navigate('/signin');
     };
 
     return (
@@ -113,62 +162,29 @@ export default function SignUp() {
             <LoginDiv>
                 <MyH2>Sign Up</MyH2>
                 <LoginForm method="post" id="signin-form">
-                    <LoginInfo>Your name</LoginInfo>
-                    <LoginInput
-                        type="text"
-                        name="username"
-                        onChange={onChangeName}
-                    />
-
-                    <LoginInfo>Email</LoginInfo>
-                    <LoginInput
-                        type="text"
-                        name="userEmail"
-                        data-testid="email-input"
-                        onChange={onChangeEmail}
-                    />
-                    {emailCheck ? (
-                        <ErrorDiv>이메일 : @ 이 누락되었습니다.</ErrorDiv>
-                    ) : (
-                        ''
-                    )}
-
-                    <LoginInfo>Password</LoginInfo>
-                    <LoginInput
-                        type="password"
-                        name="userPassword"
-                        data-testid="password-input"
-                        placeholder="At least 8 characters"
-                        onChange={onChangePassword}
-                    />
-                    {passwordCheck ? (
-                        <ErrorDiv>비밀번호 : 8자 이상으로 사용하세요.</ErrorDiv>
-                    ) : (
-                        ''
-                    )}
-
-                    <LoginInfo>Re-enter password</LoginInfo>
-                    <LoginInput
-                        type="password"
-                        name="userPassword"
-                        data-testid="password-input"
-                        onChange={onChangeRepassword}
-                    />
-                    {repasswordCheck ? (
-                        <ErrorDiv>
-                            비밀번호 : 비밀번호가 동일하지 않습니다.
-                        </ErrorDiv>
-                    ) : (
-                        ''
-                    )}
-
-                    <Button
-                        disabled={status}
-                        data-testid="signup-button"
-                        onClick={onSignupSubmit}
-                    >
-                        회원가입
+                    <LoginLabel>
+                        Name
+                        <LoginInput type="text" onChange={onChangeName} />
+                    </LoginLabel>
+                    <LoginLabel>
+                        Email
+                        <LoginInput type="email" placeholder="example@gmail.com" onChange={onChangeEmail} />
+                    </LoginLabel>
+                    {emailCheck ? <ErrorDiv>이메일 양식에 어긋납니다.</ErrorDiv> : ''}
+                    <LoginLabel>
+                        Password
+                        <LoginInput type="password" placeholder="8 digits or more" onChange={onChangePassword} />
+                    </LoginLabel>
+                    {passwordCheck ? <ErrorDiv>올바르지 않은 비밀번호 양식입니다.</ErrorDiv> : ''}
+                    <LoginLabel>
+                        Re-Password
+                        <LoginInput type="password" onChange={onChangeRepassword} />
+                    </LoginLabel>
+                    {repasswordCheck ? <ErrorDiv>비밀번호가 일치하지 않습니다.</ErrorDiv> : ''}
+                    <Button disabled={status} onClick={onSubmit}>
+                        Sign Up
                     </Button>
+                    <Button onClick={onNavigateSignIn}>Sign in as an existing member</Button>
                 </LoginForm>
             </LoginDiv>
         </>
