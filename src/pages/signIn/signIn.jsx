@@ -11,8 +11,11 @@ import Button from '../../components/button/button';
 import ErrorDiv from '../../components/error/errorDiv/errorDiv';
 import SignInUpStyle from '../../style/signInUpStyle/signInUpStyle';
 
+import { DEV_ADDRESS } from '../../api/api';
+
 export default function SignIn() {
     // signIn
+
     const [login, setLogin] = useState({
         email: '',
         password: '',
@@ -72,9 +75,26 @@ export default function SignIn() {
         }
     };
 
-    const onSubmit = async () => {
-        try {
-        } catch (err) {}
+    const url = DEV_ADDRESS;
+    const api = axios.create({
+        baseURL: url,
+        headers: {
+            'Content-Type': `application/json`,
+        },
+    });
+
+    const onSubmit = () => {
+        api.post('/auth/signin', {
+            email,
+            password,
+        })
+            .then((res) => {
+                localStorage.setItem('token', res.data.access_token);
+                navigate('/todo');
+            })
+            .catch((err) => {
+                alert('존재하지 않는 계정입니다');
+            });
     };
 
     useEffect(onChangeStatus, [isEmailValid, isPasswordValid]);
