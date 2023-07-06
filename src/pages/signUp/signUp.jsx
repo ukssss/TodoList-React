@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { DEV_ADDRESS } from '../../api/api';
+import axios from 'axios';
+
+import SignInUpStyle from '../../style/signInUpStyle/signInUpStyle';
 
 import LoginDiv from '../../components/login/loginDiv/loginDiv';
 import LoginForm from '../../components/login/loginForm/loginForm';
@@ -9,7 +13,6 @@ import LoginInput from '../../components/login/loginInput/loginInput';
 import MyH2 from '../../components/section/myH2/myH2';
 import Button from '../../components/button/button';
 import ErrorDiv from '../../components/error/errorDiv/errorDiv';
-import SignInUpStyle from '../../style/signInUpStyle/signInUpStyle';
 
 export default function SignUp() {
     const [account, setAccount] = useState({
@@ -114,7 +117,30 @@ export default function SignUp() {
 
     useEffect(onChangeStatus, [isEmailValid, isPasswordValid, isRepasswordValid]);
 
-    console.log(account);
+    // 회원가입
+
+    const url = DEV_ADDRESS;
+    const api = axios.create({
+        baseURL: url,
+        headers: {
+            'Content-Type': `application/json`,
+        },
+    });
+
+    const onSubmit = () => {
+        api.post('/auth/signup', {
+            name,
+            email,
+            password,
+        })
+            .then((res) => {
+                alert('정상적으로 회원가입 되셨습니다');
+                navigate('/signin');
+            })
+            .catch((err) => {
+                alert('기존에 가입된 계정입니다');
+            });
+    };
 
     // navigate
     const navigate = useNavigate();
@@ -125,6 +151,10 @@ export default function SignUp() {
             navigate('/todo');
         }
     }, [navigate, isLoggedIn]);
+
+    const onNavigateSignIn = () => {
+        navigate('/signin');
+    };
 
     return (
         <>
@@ -151,8 +181,10 @@ export default function SignUp() {
                         <LoginInput type="password" onChange={onChangeRepassword} />
                     </LoginLabel>
                     {repasswordCheck ? <ErrorDiv>비밀번호가 일치하지 않습니다.</ErrorDiv> : ''}
-                    <Button disabled={status}>Sign Up</Button>
-                    <Button>Sign in as an existing member</Button>
+                    <Button disabled={status} onClick={onSubmit}>
+                        Sign Up
+                    </Button>
+                    <Button onClick={onNavigateSignIn}>Sign in as an existing member</Button>
                 </LoginForm>
             </LoginDiv>
         </>
