@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
+import Checkbox from '../../checkbox/checkbox';
 
 function TodoItem({
     id,
@@ -18,8 +19,8 @@ function TodoItem({
 }) {
     return (
         <Todo>
-            <Check
-                type="checkbox"
+            <Checkbox
+                id={text}
                 onChange={() => {
                     onToggle(todo);
                 }}
@@ -86,7 +87,10 @@ const Todo = styled.li`
     display: flex;
     flex-direction: row;
 `;
+
+const Label = styled.label``;
 const Check = styled.input``;
+
 const Text = styled.div`
     ${(props) =>
         props.checked &&
@@ -94,8 +98,10 @@ const Text = styled.div`
             color: #ced4da;
         `}
 `;
+
 const Remove = styled.button``;
 const Edit = styled.button``;
+
 const EditText = styled.input``;
 const Save = styled.button``;
 const Cancel = styled.button``;
