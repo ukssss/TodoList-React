@@ -180,10 +180,12 @@ export default function SignUp() {
                         <LoginInput type="password" placeholder="check password" onChange={onChangeRepassword} />
                     </LoginLabel>
                     {repasswordCheck ? <ErrorDiv>비밀번호가 일치하지 않습니다.</ErrorDiv> : ''}
-                    <Button disabled={status} onClick={onSubmit}>
+                    <Button marginBottom={'16px'} disabled={status} onClick={onSubmit}>
                         Sign Up
                     </Button>
-                    <Button onClick={onNavigateSignIn}>Sign in as an existing member</Button>
+                    <Button marginBottom={'16px'} onClick={onNavigateSignIn}>
+                        Sign in as an existing member
+                    </Button>
                 </LoginForm>
             </LoginDiv>
         </>
