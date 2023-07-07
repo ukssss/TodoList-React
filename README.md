@@ -1,70 +1,118 @@
-# Getting Started with Create React App
+# TodoList - React
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+리액트 기술을 활용하여 제작하여 리액트 기술 향상을 도모하기 위한 첫 프로젝트로 TodoList를 제작했습니다.
 
-## Available Scripts
+## 🪑 참고
 
-In the project directory, you can run:
+[원티드 프리온보딩 프론드엔드 선발과제]("https://github.com/walking-sunset/selection-task")를 참고하여 만든 프로젝트입니다.
 
-### `npm start`
+## ⚙️ 사용 기술 및 개발 환경
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+-   Tools : Visual Studio Code
+-   OS : macOS 13.4.1(22F82)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+[Front-End]
 
-### `npm test`
+-   Web : JavaScript, Styled-Components
+-   Library : React
+-   Build : CRA
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+[Server]
 
-### `npm run build`
+-   Local API 서버를 활용하여 실습
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## ✨ 구현 내용
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### SignUp
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+-   서버로 email, password 를 전송하여 회원가입 구현
+-   이름은 생략가능하도록 구현
+-   email, password 유효성 검사 구현
 
-### `npm run eject`
+#### 요청
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+-   URL: `/auth/signup`
+-   Method: `POST`
+-   Headers:
+    -   Content-Type: `application/json`
+-   Body:
+    -   email: string
+    -   password: string
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<img src="./img/signUp.gif" style="width:500px">
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+-   다음은 서버에 회원가입 정보가 저장된 모습이다.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+<img src="./img/signUp(2).png" style="width:500px">
 
-## Learn More
+### SignIn
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+-   서버에 저장된 회원정보를 조회해 이와 비교했을 때 가입된 회원의 정보가 들어오면 로그인되는 방식이다.
+-   로그인을 성공하면 JWT 을 로컬 스토리지에 저장한다.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### 요청
 
-### Code Splitting
+-   URL: `/auth/signin`
+-   Method: `POST`
+-   Headers:
+    -   Content-Type: `application/json`
+-   Body:
+    -   email: string
+    -   password: string
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+<img src="./img/signIn.gif" style="width:500px">
 
-### Analyzing the Bundle Size
+-   다음은 로그인을 성공하여 JWT 가 로컬 스토리지에 저장된 모습이다.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+<img src="./img/signIn(2).png" style="width:500px">
 
-### Making a Progressive Web App
+### Todo
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+-   투두 리스트 추가(createTodo), 불러오기(getTodos), 수정(updateTodo), 삭제(deleteTodo) 구현
 
-### Advanced Configuration
+#### createTodo 요청
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+-   URL: `/todos`
+-   Method: `POST`
+-   Headers:
+    -   Authorization: `Bearer access_token`
+    -   Content-Type: `application/json`
+-   Body:
+    -   todo: string
 
-### Deployment
+<img src="./img/createTodo.gif" style="width:500px">
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+#### getTodos 요청
 
-### `npm run build` fails to minify
+-   URL: `/todos`
+-   Method: `GET`
+-   Headers:
+    -   Authorization: `Bearer access_token`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<img src="./img/getTodos.gif" style="width:500px">
+
+#### updateTodo 요청
+
+-   URL: `/todos/:id`
+-   Method: `PUT`
+-   Headers:
+    -   Authorization: `Bearer access_token`
+    -   Content-Type: `application/json`
+-   Body:
+    -   todo: string
+    -   isCompleted: boolean
+
+<img src="./img/updateTodo.gif" style="width:500px">
+
+#### deleteTodo 요청
+
+-   URL: `/todos/:id`
+-   Method: `DELETE`
+-   Headers:
+    -   Authorization: `Bearer access_token`
+
+<img src="./img/deleteTodo.gif" style="width:500px">
+
+-   다음은 투두 리스트가 Local API 서버에 저장된 모습이다.
+
+<img src="./img/todo.png" style="width:500px">
