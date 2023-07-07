@@ -6,6 +6,9 @@ export default function TodoList({ children }) {
 }
 
 const List = styled.ul`
+    margin: 0;
+    padding: 0;
     height: 100%;
+    margin-top: 20px;
     overflow: scroll;
 `;

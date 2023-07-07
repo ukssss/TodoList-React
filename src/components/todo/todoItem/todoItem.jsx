@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import Checkbox from '../../checkbox/checkbox';
+import Button from '../../button/button';
 
 function TodoItem({
     id,
@@ -37,46 +38,48 @@ function TodoItem({
                             setEditTodo(e.target.value);
                         }}
                     />
-                    <Save
-                        type="button"
+                    <Button
                         data-testid="submit-button"
                         onClick={() => {
                             onEdit(todo, editTodo);
                         }}
+                        width={'50px'}
                     >
                         제출
-                    </Save>
-                    <Cancel
-                        type="button"
+                    </Button>
+                    <Button
                         data-testid="cancel-button"
                         onClick={() => {
                             onCancel(todo);
                         }}
+                        width={'50px'}
                     >
                         취소
-                    </Cancel>
+                    </Button>
                 </>
             ) : (
                 <>
                     <Text checked={checked}>{text}</Text>
-                    <Edit
-                        type="button"
-                        onClick={() => {
-                            onEditMode(todo);
-                        }}
-                        data-testid="delete-button"
-                    >
-                        수정
-                    </Edit>
-                    <Remove
-                        type="button"
-                        onClick={() => {
-                            onRemove(todo.id);
-                        }}
-                        data-testid="modify-button"
-                    >
-                        삭제
-                    </Remove>
+                    <StyledDiv>
+                        <Button
+                            onClick={() => {
+                                onEditMode(todo);
+                            }}
+                            data-testid="delete-button"
+                            width={'50px'}
+                        >
+                            수정
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                onRemove(todo.id);
+                            }}
+                            data-testid="modify-button"
+                            width={'50px'}
+                        >
+                            삭제
+                        </Button>
+                    </StyledDiv>
                 </>
             )}
         </Todo>
@@ -86,24 +89,34 @@ function TodoItem({
 const Todo = styled.li`
     display: flex;
     flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 20px 0;
 `;
 
-const Label = styled.label``;
-const Check = styled.input``;
-
 const Text = styled.div`
+    font-size: 24px;
+    flex: 1;
+    padding: 0 30px;
+
     ${(props) =>
         props.checked &&
         css`
             color: #ced4da;
-        `}
+        `};
 `;
 
-const Remove = styled.button``;
-const Edit = styled.button``;
+const EditText = styled.input`
+    font-size: 24px;
+    flex: 1;
+    margin: 0 30px;
+`;
 
-const EditText = styled.input``;
-const Save = styled.button``;
-const Cancel = styled.button``;
+const StyledDiv = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+`;
 
 export default React.memo(TodoItem);
