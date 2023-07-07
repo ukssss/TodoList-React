@@ -12,6 +12,7 @@ import ErrorDiv from '../../components/error/errorDiv/errorDiv';
 import SignInUpStyle from '../../style/signInUpStyle/signInUpStyle';
 
 import { DEV_ADDRESS } from '../../api/api';
+import { styled } from 'styled-components';
 
 export default function SignIn() {
     // signIn
@@ -125,10 +126,12 @@ export default function SignIn() {
                     {emailCheck ? <ErrorDiv>이메일 양식에 어긋납니다.</ErrorDiv> : ''}
                     <LoginInput type="password" placeholder="Password" onChange={onChangePassword} />
                     {passwordCheck ? <ErrorDiv>올바르지 않은 비밀번호 양식입니다.</ErrorDiv> : ''}
-                    <Button disabled={status} onClick={onSubmit}>
+                    <Button marginBottom={'16px'} disabled={status} onClick={onSubmit}>
                         Sign In
                     </Button>
-                    <Button onClick={onDirectSignUp}>Sign Up</Button>
+                    <Button marginBottom={'16px'} onClick={onDirectSignUp}>
+                        Sign Up
+                    </Button>
                 </LoginForm>
             </LoginDiv>
         </>

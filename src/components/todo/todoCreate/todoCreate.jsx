@@ -35,6 +35,8 @@ function TodoCreate({ createTodo }) {
     );
 }
 
-const TodoForm = styled.form``;
+const TodoForm = styled.form`
+    width: 520px;
+`;
 
 export default React.memo(TodoCreate);
