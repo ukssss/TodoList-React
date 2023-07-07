@@ -5,4 +5,7 @@ export default function TodoList({ children }) {
     return <List>{children}</List>;
 }
 
-const List = styled.ul``;
+const List = styled.ul`
+    height: 100%;
+    overflow: scroll;
+`;
