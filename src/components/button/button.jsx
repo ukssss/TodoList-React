@@ -8,19 +8,14 @@ const StyledButton = styled.button`
     box-sizing: border-box;
     margin-bottom: 16px;
     border-radius: 6px;
-    background-color: ${(props) => (props.$primary ? '#f8f8f8' : '#6A24FE')};
+    background-color: ${(props) => (props.$primary ? '#f8f8f8' : '#008000')};
     color: ${(props) => (props.$primary ? '#000000' : '#f8f8f8')};
     background-color: ${(props) => props.disabled && '#d2d2d2'};
 `;
 
 function Button({ disabled, width, children, ...restProps }) {
     return (
-        <StyledButton
-            type="button"
-            disabled={disabled}
-            width={width}
-            {...restProps}
-        >
+        <StyledButton type="button" disabled={disabled} width={width} {...restProps}>
             {children}
         </StyledButton>
     );
