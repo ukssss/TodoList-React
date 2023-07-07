@@ -50,7 +50,7 @@ export default function SignUp() {
         });
     };
 
-    const { name, email, password, repassword, emailCheck, passwordCheck, repasswordCheck, status } = account;
+    const { email, password, repassword, emailCheck, passwordCheck, repasswordCheck, status } = account;
 
     // 이메일 유효성 검사 (이메일 조건: @ 포함)
 
@@ -129,7 +129,6 @@ export default function SignUp() {
 
     const onSubmit = () => {
         api.post('/auth/signup', {
-            name,
             email,
             password,
         })
@@ -164,7 +163,7 @@ export default function SignUp() {
                 <LoginForm method="post" id="signin-form">
                     <LoginLabel>
                         Name
-                        <LoginInput type="text" onChange={onChangeName} />
+                        <LoginInput type="text" placeholder="optional" onChange={onChangeName} />
                     </LoginLabel>
                     <LoginLabel>
                         Email
@@ -178,7 +177,7 @@ export default function SignUp() {
                     {passwordCheck ? <ErrorDiv>올바르지 않은 비밀번호 양식입니다.</ErrorDiv> : ''}
                     <LoginLabel>
                         Re-Password
-                        <LoginInput type="password" onChange={onChangeRepassword} />
+                        <LoginInput type="password" placeholder="check password" onChange={onChangeRepassword} />
                     </LoginLabel>
                     {repasswordCheck ? <ErrorDiv>비밀번호가 일치하지 않습니다.</ErrorDiv> : ''}
                     <Button disabled={status} onClick={onSubmit}>
